@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- GOOGLE MAPS WILL NOT FUNCTION CORRECTLY WITHOUT AN API KEY WHICH IS NOT INCLUDED IN THIS DISTRIBUTION -->
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/gmaps.css') }}">
+    <script src="{{ url_for('static', filename='javascript/gmaps.js') }}"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <title>GarageSnail - Create a Posting</title>
+</head>
+
+<body>
+    <div class="navbar">
+        <div class="navleft">
+            <h1>GarageSnail</h1>
+        </div>
+        <div class="navcenter">
+            <input class="searchtext" id="searchtext" type='text' name='userInput' placeholder="enter desired location"
+                onkeydown="search()">
+            <ul id="sresults" style="display: none;">
+                {% for loc in locs %}
+                <li>
+                    <a href="/search/{{ loc }}">{{ loc }}</a>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="navright">
+            <div class="navwrapper">
+                <p>Welcome, {{ firstname.capitalize() }}!</p>
+                <div class="navwrapper2">
+                    <a href="/myposts">My Posts</a> | <a href="/home">Home</a> | <a href="/logout">Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="cont2">
+        <h1 class="title">Create a Post</h1>
+        <div class="createwrapper">
+            <div class="box3">
+                <form class="form" action='/new/create' method='POST'>
+                    {% for error in get_flashed_messages(category_filter=["post1"]) %}
+                    <p class="error">{{ error }}</p>
+                    {% endfor %}
+                    <label for='ptitle'>Post Title:</label>
+                    <input class="textform" type='text' name='ptitle' maxlength="45">
+
+                    {% for error in get_flashed_messages(category_filter=["post2"]) %}
+                    <p class="error">{{ error }}</p>
+                    {% endfor %}
+                    <label for='pdesc'>Description:</label>
+                    <textarea class="textarea" name="pdesc" maxlength="255"></textarea>
+
+                    {% for error in get_flashed_messages(category_filter=["post3"]) %}
+                    <p class="error">{{ error }}</p>
+                    {% endfor %}
+                    {% for error in get_flashed_messages(category_filter=["post4"]) %}
+                    <p class="error">{{ error }}</p>
+                    {% endfor %}
+                    <label for='pdate'>Date/Time of Garage Sale:</label>
+                    <input class="postdate" type='date' name='pdate' value='{{ date }}'>
+                    <input class="posttime" type='time' name='ptime'>
+
+                    <input type="hidden" name="plid" id="plid" value="">
+                    <input type="hidden" name="padd" id="padd" value="">
+                    <input class="submit" type='submit' value='Create'>
+                </form>
+            </div>
+            <div class="box4">
+                {% for error in get_flashed_messages(category_filter=["post5"]) %}
+                <p class="error">{{ error }}</p>
+                {% endfor %}
+                <div style="display: none">
+                    <input id="pac-input" class="controls" type="text" placeholder="Enter a location" />
+                </div>
+                <div id="map"></div>
+                <div id="infowindow-content">
+                    <span id="place-name" class="title"></span><br />
+                    <strong>Address:</strong> <span id="place-id"></span><br />
+                    <span id="place-address"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='javascript/snailscript.js') }}"></script>
+    <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=[GOOGLE MAPS KEY]&callback=initMap&libraries=places&v=weekly" async></script>
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <title>GarageSnail - Home</title>
+</head>
+<body>
+    <div class="navbar">
+        <div class="navleft">
+            <h1>GarageSnail</h1>
+        </div>
+        <div class="navcenter">
+            <input class="searchtext" id="searchtext" type='text' name='userInput' placeholder="enter desired location" onkeyup="search()">
+            <ul id="sresults" style="display: none;">
+                {% for loc in locs %}
+                <li>
+                    <a href="/search/{{ loc }}">{{ loc }}</a>
+                </li>
+                {% endfor %}
+                </ul>
+        </div>
+        <div class="navright">
+            <div class="navwrapper">
+                <p>Welcome, {{ firstname.capitalize() }}!</p>
+                <div class="navwrapper2">
+                    <a href="/myposts">My Posts</a> | <a href="/logout">Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="subheadercont">
+        <p class="subheader">Latest Garage Sales</p>
+        <div class="create"><a href="/new">Create a Posting</a></div>
+    </div>
+    <div class="postings">
+        {% for post in posts %}
+        <div class="post">
+            <div class="postdate-home">
+                <p>{{ post.created_at.strftime('%m/%d/%Y') }}</p>
+            </div>
+            <div class="posttitle-home">
+                <p><a href="/post/{{ post.id }}">{{ post.title }}</a></p>
+            </div>
+            <div class="postlocation-home">
+                <p>({{ post.city }}, {{ post.state }})</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+<script src="{{ url_for('static', filename='javascript/snailscript.js') }}"></script
+</html>
